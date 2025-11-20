@@ -11,6 +11,8 @@ import { YoutubeModule } from './youtube/youtube.module';
 import { TranscriptionModule } from './transcription/transcription.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { CronModule } from './cron/cron.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { CronModule } from './cron/cron.module';
     TranscriptionModule,
     AnalysisModule,
     CronModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [
     {

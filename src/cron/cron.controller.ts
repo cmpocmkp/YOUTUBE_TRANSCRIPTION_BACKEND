@@ -4,12 +4,19 @@ import {
   Param,
   Query,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { CronService } from './cron.service';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 import { CronRunQueryDto } from './dto/cron-run-query.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRole } from '../users/schemas/user.schema';
 
 @Controller('api/cron-runs')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
 export class CronController {
   constructor(private readonly cronService: CronService) {}
 

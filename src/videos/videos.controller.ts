@@ -6,12 +6,15 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { VideosService } from './videos.service';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 import { ReanalyzeDto } from './dto/reanalyze.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('api')
+@UseGuards(JwtAuthGuard)
 export class VideosController {
   constructor(private readonly videosService: VideosService) {}
 
