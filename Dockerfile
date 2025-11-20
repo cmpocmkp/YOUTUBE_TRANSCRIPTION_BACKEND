@@ -3,6 +3,13 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Install Python and build dependencies for youtube-dl-exec
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    && ln -sf python3 /usr/bin/python
+
 # Copy package files
 COPY package*.json ./
 
@@ -20,12 +27,13 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-# Install ffmpeg and other required system dependencies
+# Install ffmpeg, Python and other required system dependencies
 RUN apk add --no-cache \
     ffmpeg \
     python3 \
     make \
     g++ \
+    && ln -sf python3 /usr/bin/python \
     && rm -rf /var/cache/apk/*
 
 # Copy package files
