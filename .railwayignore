@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.env
+*.log
+coverage
+.nyc_output
+*.mp3
+*.mp4
+*.webm
+*.m4a
+.vscode
+.idea
+
