@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppConfigService } from './common/config/config.service';
 
@@ -41,10 +42,41 @@ async function bootstrap() {
   // Global prefix
   app.setGlobalPrefix('api');
 
+  // Swagger/OpenAPI Documentation
+  const config = new DocumentBuilder()
+    .setTitle('YouTube Transcription & Sentiment Analysis API')
+    .setDescription('Backend API for YouTube video transcription and political sentiment analysis')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
+    .addTag('Authentication', 'User authentication endpoints')
+    .addTag('Users', 'User management endpoints')
+    .addTag('YouTubers', 'YouTuber channel management endpoints')
+    .addTag('Videos', 'Video transcription and analysis endpoints')
+    .addTag('Cron Runs', 'Cron job execution logs')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true, // Keep authorization token after page refresh
+    },
+  });
+
   const port = configService.port;
   await app.listen(port);
 
   console.log(`Application is running on: http://localhost:${port}/api`);
+  console.log(`Swagger documentation available at: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();
