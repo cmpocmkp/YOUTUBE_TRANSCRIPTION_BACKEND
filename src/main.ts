@@ -12,20 +12,11 @@ async function bootstrap() {
 
   // Enable CORS - allow all origins
   app.enableCors({
-    origin: true, // Allow all origins
+    origin: '*', // Allow all origins
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'Accept',
-      'Origin',
-      'X-Requested-With',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Methods',
-    ],
+    allowedHeaders: '*', // Allow all headers
     exposedHeaders: ['Authorization'],
-    credentials: false, // Set to false when using origin: true or '*'
+    credentials: false, // Must be false when origin is '*'
     preflightContinue: false,
     optionsSuccessStatus: 204,
   });

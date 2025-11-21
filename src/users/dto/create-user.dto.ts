@@ -2,9 +2,13 @@ import { IsString, IsEmail, IsNotEmpty, IsEnum, IsOptional, MinLength } from 'cl
 import { UserRole } from '../schemas/user.schema';
 
 export class CreateUserDto {
-  @IsEmail()
+  @IsString()
   @IsNotEmpty()
-  email: string;
+  username: string;
+
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 
   @IsString()
   @IsNotEmpty()

@@ -9,7 +9,7 @@ async function seedSuperAdmin() {
 
   try {
     // Check if super admin already exists
-    const existingUser = await usersService.findByEmail('CMPO');
+    const existingUser = await usersService.findByUsername('CMPO');
     
     if (existingUser) {
       // Update existing user to super_admin
@@ -18,19 +18,19 @@ async function seedSuperAdmin() {
         isActive: true,
       });
       console.log('✅ Super admin user updated successfully!');
-      console.log('Email: CMPO');
+      console.log('Username: CMPO');
       console.log('Role: super_admin');
     } else {
       // Create new super admin user
       await usersService.create({
-        email: 'CMPO',
+        username: 'CMPO',
         password: 'Cmpo123@#$',
         name: 'CMPO Super Admin',
         role: UserRole.SUPER_ADMIN,
         isActive: true,
       });
       console.log('✅ Super admin user created successfully!');
-      console.log('Email: CMPO');
+      console.log('Username: CMPO');
       console.log('Password: Cmpo123@#$');
       console.log('Role: super_admin');
     }

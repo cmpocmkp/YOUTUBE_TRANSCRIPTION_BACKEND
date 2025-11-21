@@ -6,7 +6,7 @@ import { UserDocument } from '../users/schemas/user.schema';
 
 export interface JwtPayload {
   sub: string;
-  email: string;
+  username: string;
   role: string;
 }
 
@@ -14,7 +14,8 @@ export interface AuthResponse {
   access_token: string;
   user: {
     _id: string;
-    email: string;
+    username: string;
+    email?: string;
     name: string;
     role: string;
   };
@@ -27,8 +28,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<UserDocument | null> {
-    const user = await this.usersService.findByEmail(email);
+  async validateUser(username: string, password: string): Promise<UserDocument | null> {
+    const user = await this.usersService.findByUsername(username);
     if (!user) {
       return null;
     }
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<AuthResponse> {
-    const user = await this.validateUser(loginDto.email, loginDto.password);
+    const user = await this.validateUser(loginDto.username, loginDto.password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -56,7 +57,7 @@ export class AuthService {
 
     const payload: JwtPayload = {
       sub: user._id.toString(),
-      email: user.email,
+      username: user.username,
       role: user.role,
     };
 
@@ -64,6 +65,7 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       user: {
         _id: user._id.toString(),
+        username: user.username,
         email: user.email,
         name: user.name,
         role: user.role,
